@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Login from './pages/Login';
+import Plans, { PlanResponse } from './pages/Plans/Plans';
+import InsuranceQuote from './pages/InsuranceQuote';
 
 function App() {
+  const [page, setPage] = useState<string>('login');
+  const [plans, setPlans] = useState<PlanResponse[]>();
+  const handleSuccesfulLogin = () => {
+    setPage('insurance-quote');
+  };
+  const handleInsurance = (plans: PlanResponse[]) => {
+    setPlans(plans);
+    setPage('plans');
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {page === 'login' && <Login onSuccesfulLogin={handleSuccesfulLogin} />}
+      {page === 'insurance-quote' && <InsuranceQuote onApprovedQuote={handleInsurance} />}
+      {page === 'plans' && <Plans planRes={plans} />}
+    </>
   );
 }
 
